@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  user-service:
+    build:
+      context: ../..
+      dockerfile: backend/user-service/Dockerfile
+    ports:
+      - "8001:8080"
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../backend:/app/backend
+
+  timeline-service:
+    build:
+      context: ../..
+      dockerfile: backend/timeline-service/Dockerfile
+    ports:
+      - "8002:8080"
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../backend:/app/backend
+
+  matching-service:
+    build:
+      context: ../..
+      dockerfile: backend/matching-service/Dockerfile
+    ports:
+      - "8003:8080"
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../backend:/app/backend
+
+  ai-service:
+    build:
+      context: ../..
+      dockerfile: backend/ai-service/Dockerfile
+    ports:
+      - "8004:8080"
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../backend:/app/backend
+
+  export-service:
+    build:
+      context: ../..
+      dockerfile: backend/export-service/Dockerfile
+    ports:
+      - "8005:8080"
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../backend:/app/backend
+
+  notification-service:
+    build:
+      context: ../..
+      dockerfile: backend/notification-service/Dockerfile
+    ports:
+      - "8006:8080"
+    env_file:
+      - ../../.env
+    volumes:
+      - ../../backend:/app/backend

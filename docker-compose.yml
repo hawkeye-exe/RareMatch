@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  user-service:
+    build:
+      context: .
+      dockerfile: backend/user-service/Dockerfile
+    ports:
+      - "8001:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/user-service:/app/user-service
+      - ./backend/shared:/app/shared
+    restart: always
+
+  timeline-service:
+    build:
+      context: .
+      dockerfile: backend/timeline-service/Dockerfile
+    ports:
+      - "8002:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/timeline-service:/app/timeline-service
+      - ./backend/shared:/app/shared
+    restart: always
+
+  matching-service:
+    build:
+      context: .
+      dockerfile: backend/matching-service/Dockerfile
+    ports:
+      - "8003:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/matching-service:/app/matching-service
+      - ./backend/shared:/app/shared
+    restart: always
+
+  ai-service:
+    build:
+      context: .
+      dockerfile: backend/ai-service/Dockerfile
+    ports:
+      - "8004:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/ai-service:/app/ai-service
+      - ./backend/shared:/app/shared
+    restart: always
+
+  export-service:
+    build:
+      context: .
+      dockerfile: backend/export-service/Dockerfile
+    ports:
+      - "8005:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/export-service:/app/export-service
+      - ./backend/shared:/app/shared
+    restart: always
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: backend/notification-service/Dockerfile
+    ports:
+      - "8006:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/notification-service:/app/notification-service
+      - ./backend/shared:/app/shared
+    restart: always
