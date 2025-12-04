@@ -1,5 +1,10 @@
-$VENV_PYTHON = "C:\Users\alwin\.gemini\venv_tf\Scripts\python.exe"
-$BASE_DIR = "c:\Users\alwin\OneDrive\Documents\hackathon\HackSpace\rarematch\backend"
+# Configuration
+# TODO: Update this path to your local python executable (in venv)
+$VENV_PYTHON = "python" 
+# If you have a specific venv, uncomment and set it:
+# $VENV_PYTHON = "C:\path\to\venv\Scripts\python.exe"
+
+$BASE_DIR = "$PSScriptRoot\backend"
 
 function Start-Service {
     param (

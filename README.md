@@ -47,43 +47,50 @@ You can use the provided PowerShell script to start all services (Windows):
 ```powershell
 ./start_services.ps1
 ```
-*Note: Ensure you have your python virtual environment set up and paths configured in the script if necessary.*
+*Note: You may need to edit `start_services.ps1` to point `$VENV_PYTHON` to your local python executable.*
 
 Alternatively, run with Docker Compose:
 ```bash
 docker-compose up --build
 ```
 
-### 4. Data Seeding (Optional)
-To populate the database with training data for the matching engine:
+## Data Pipeline & Seeding
 
-1.  Ensure your `.env` has `SUPABASE_SERVICE_ROLE_KEY`.
-2.  Run the upload script:
-    ```bash
-    python infrastructure/scripts/upload_ml_data.py
-    ```
+To power the AI Matching Engine, you need to seed the database with reference cases.
 
-### 5. Running the Frontend
-1.  **Install Dependencies**:
-    ```bash
-    flutter pub get
-    ```
-2.  **Run App**:
-    ```bash
-    flutter run
-    ```
+### 1. Dataset Requirements
+Prepare a CSV file (e.g., `dataset.csv`) with the following columns:
+- `diagnosis`: The name of the disease.
+- `symptoms`: A string or list of symptoms (e.g., "fever, rash, joint pain").
+- `patient_id` (Optional): Unique identifier.
 
-## Features
-- **Timeline Builder**: Create detailed symptom timelines.
-- **AI Matching**: Find similar cases using vector search.
-- **Visualization**: View match confidence scores.
-- **Export**: Generate PDF reports for doctors.
+### 2. Upload Process
+We provide a script to clean and upload this data to Supabase.
+
+1.  **Configure**: Ensure your `.env` file has `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
+2.  **Run Script**:
+    ```bash
+    # Usage: python infrastructure/scripts/upload_ml_data.py <path_to_csv>
+    python infrastructure/scripts/upload_ml_data.py data/dataset.csv
+    ```
+    *The script will automatically generate embeddings using the AI Service and store them in the `reference_cases` table.*
 
 ## Testing & Verification
-We have moved verification scripts to the `test/` folder.
 
-- **Frontend Tests**: `flutter test`
-- **Backend/Integration Scripts** (in `test/`):
-    - `verify_features.py`: Checks core feature availability.
-    - `verify_frontend_build.py`: Verifies frontend build integrity.
-    - `test_similarity.py`: Tests the vector matching logic.
+We have organized all testing and debugging scripts in the `test/` folder.
+
+### Automated Tests
+- **Frontend**: `flutter test`
+- **Backend Health**: `python test/check_services.py` (Checks if all microservices are up)
+
+### Debugging Scripts
+Use these scripts to verify specific components if you encounter issues:
+
+- `test/verify_features.py`: Checks if core features (Timeline, Matching) are accessible.
+- `test/test_similarity.py`: **Critical for AI**. Tests the vector matching logic to ensure embeddings are working.
+- `test/verify_frontend_build.py`: Verifies the Flutter build process.
+
+### SQL Debugging
+If you need to debug database issues or understand the schema, check `test/sql_debug/`.
+- `schema.sql`: The master schema file (in `infrastructure/supabase/`).
+- `test/sql_debug/`: Contains individual setup scripts for specific features (e.g., `setup_feedback.sql`, `fix_realtime.sql`) which can be run individually to patch or reset specific parts of the DB.

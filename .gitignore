@@ -77,3 +77,4 @@ env/
 
 # Training Data
 Dataset-training/
+*.npy
